@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PatrulUA | Офіційний ресурс</title>
+    <style>
+        :root {
+            --primary: #0057b7;
+            --secondary: #ffd700;
+            --accent: #ff5a5f;
+            --text: #2d3748;
+            --light: #f7fafc;
+            --dark: #1a202c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(to bottom, #e4e8eb 0%, #1a202c 100%);
+            min-height: 100vh;
+            color: var(--text);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo-container {
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+        
+        .logo {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 24px;
+            object-fit: contain;
+            box-shadow: 0 15px 30px rgba(0, 87, 183, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .logo:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 87, 183, 0.3);
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 8px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 3px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: var(--light);
+            opacity: 0.8;
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+        
+        .btn-main {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 16px;
+            padding: 18px 24px;
+            margin-bottom: 16px;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .btn-main::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+        
+        .btn-main:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .btn-main:hover::before {
+            width: 8px;
+        }
+        
+        .btn-main-link {
+            display: flex;
+            align-items: center;
+            width: calc(100% - 52px);
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        
+        .btn-icon img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+        
+        .btn-content {
+            flex-grow: 1;
+            text-align: left;
+        }
+        
+        .btn-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+        
+        .btn-subtitle {
+            font-size: 14px;
+            color: var(--text);
+            opacity: 0.7;
+            font-weight: 500;
+        }
+        
+        .btn-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 12px;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        
+        .btn-arrow:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-main.active .btn-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .btn-expand {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 0 0 16px 16px;
+            margin-top: -16px;
+            margin-bottom: 16px;
+            padding: 0 24px;
+        }
+        
+        .btn-expand-content {
+            padding: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text);
+            border-top: 1px dashed rgba(0, 0, 0, 0.1);
+        }
+        
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--light);
+            opacity: 0.6;
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                max-width: calc(100% - 20px);
+                border-radius: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .btn-main {
+                padding: 16px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <a href="https://t.me/+qOlnWWZ3IjJlYzU4">
+                    <img src="https://drive.google.com/thumbnail?id=10GzpijyLljs9cUh_--u-NeNX6AbTWmzZ&sz=w1000" alt="PatrulUA" class="logo">
+                </a>
+            </div>
+            <h1>РАДАР УКРАЇНИ <span style="color: var(--secondary)">🇺🇦</span></h1>
+            <p class="subtitle">Ми не є офіційним джерелом інформації</p>
+        </header>
+        
+        <div class="btn-group">
+            <div class="btn-wrapper">
+                <div class="btn-main" id="telegramBtn">
+                    <a href="https://t.me/+qOlnWWZ3IjJlYzU4" class="btn-main-link">
+                        <div class="btn-icon">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+                        </div>
+                        <div class="btn-content">
+                            <div class="btn-title">Підключитися в Telegram</div>
+                            <div class="btn-subtitle">Офіційний канал PatrulUA</div>
+                        </div>
+                    </a>
+                    <div class="btn-arrow" onclick="toggleExpand(event, this)">▼</div>
+                </div>
+                <div class="btn-expand">
+                    <div class="btn-expand-content">
+                        Якщо виникають проблеми з тим, що вас не перекидає в додаток Telegram, шукайте канал через пошук Telegram. Шукати: @PatrulUa
+                    </div>
+                </div>
+            </div>
+            
+            <div class="btn-wrapper">
+                <div class="btn-main" id="monobankBtn" style="background: var(--secondary);">
+                    <a href="https://send.monobank.ua/jar/2kabduxQGE" class="btn-main-link">
+                        <div class="btn-icon" style="background: rgba(0,0,0,0.1);">
+                            <img src="https://monobank.ua/resources/1.0.31.0-1744288364387/img/int-p2p/cat.png" alt="Monobank">
+                        </div>
+                        <div class="btn-content">
+                            <div class="btn-title">Підтримати фінансово</div>
+                            <div class="btn-subtitle">Допомога каналу та ЗП адмінам</div>
+                        </div>
+                    </a>
+                    <div class="btn-arrow" onclick="toggleExpand(event, this)">▼</div>
+                </div>
+                <div class="btn-expand">
+                    <div class="btn-expand-content">
+                        💳 Додаткові реквізити:<br>
+                        4441111125746465<br>
+                        IBAN: UA8383838DJ3883<br><br>
+                        
+                        🫙 Банка: <a href="https://send.monobank.ua/jar/2kabduxQGE" style="color: var(--primary); text-decoration: none;">monobank</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            © 2024 PatrulUA. Всі права захищені.<br>
+            Glory to Ukraine! 🇺🇦
+        </div>
+    </div>
+    
+    <script>
+        function toggleExpand(event, arrow) {
+            event.stopPropagation();
+            const btnMain = arrow.parentNode;
+            const expand = btnMain.nextElementSibling;
+            const isActive = btnMain.classList.contains('active');
+            
+            // Close all other expanded sections
+            document.querySelectorAll('.btn-expand').forEach(item => {
+                if (item !== expand) {
+                    item.style.maxHeight = '0';
+                    item.previousElementSibling.classList.remove('active');
+                }
+            });
+            
+            // Toggle current section
+            if (isActive) {
+                expand.style.maxHeight = '0';
+                btnMain.classList.remove('active');
+            } else {
+                expand.style.maxHeight = expand.scrollHeight + 'px';
+                btnMain.classList.add('active');
+            }
+        }
+        
+        // Handle main button clicks (excluding arrow clicks)
+        document.getElementById('telegramBtn').addEventListener('click', function(e) {
+            if (!e.target.closest('.btn-arrow')) {
+                window.location.href = "https://t.me/+qOlnWWZ3IjJlYzU4";
+            }
+        });
+        
+        document.getElementById('monobankBtn').addEventListener('click', function(e) {
+            if (!e.target.closest('.btn-arrow')) {
+                window.location.href = "https://send.monobank.ua/jar/2kabduxQGE";
+            }
+        });
+        
+        // Animation on load
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.querySelector('.logo').style.opacity = '1';
+                document.querySelector('.logo').style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
