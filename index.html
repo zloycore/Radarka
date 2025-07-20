@@ -45,6 +45,7 @@
         .logo-container {
             display: inline-block;
             margin-bottom: 25px;
+            position: relative;
         }
         
         .logo {
@@ -61,6 +62,26 @@
         .logo:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 40px rgba(0, 87, 183, 0.3);
+        }
+        
+        .countdown-text {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .countdown-text.active {
+            opacity: 1;
+            transform: scale(1);
         }
         
         h1 {
@@ -238,15 +259,25 @@
                 padding: 16px 20px;
             }
         }
+        
+        /* Zoom animation */
+        @keyframes zoomIn {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+        
+        .zoomed {
+            animation: zoomIn 0.5s ease forwards;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <div class="logo-container">
-                <a href="https://t.me/+qOlnWWZ3IjJlYzU4">
-                    <img src="https://drive.google.com/thumbnail?id=10GzpijyLljs9cUh_--u-NeNX6AbTWmzZ&sz=w1000" alt="PatrulUA" class="logo">
-                </a>
+                <img src="https://drive.google.com/thumbnail?id=10GzpijyLljs9cUh_--u-NeNX6AbTWmzZ&sz=w1000" 
+                     alt="PatrulUA" class="logo" id="mainLogo">
+                <div class="countdown-text" id="countdownText"></div>
             </div>
             <h1>РАДАР УКРАЇНИ <span style="color: var(--secondary)">🇺🇦</span></h1>
             <p class="subtitle">Ми не є офіційним джерелом інформації</p>
@@ -255,7 +286,7 @@
         <div class="btn-group">
             <div class="btn-wrapper">
                 <div class="btn-main" id="telegramBtn">
-                    <a href="https://t.me/+qOlnWWZ3IjJlYzU4" class="btn-main-link">
+                    <a href="https://t.me/+2uA-yoJ8X5o5YTM0" class="btn-main-link">
                         <div class="btn-icon">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
                         </div>
@@ -310,6 +341,42 @@
     </div>
     
     <script>
+        // Store original logo
+        const originalLogoSrc = document.getElementById('mainLogo').src;
+        const redirectUrl = "https://t.me/+2uA-yoJ8X5o5YTM0";
+        const countdownText = document.getElementById('countdownText');
+        const mainLogo = document.getElementById('mainLogo');
+
+        // Handle logo click
+        mainLogo.addEventListener('click', function() {
+            // Change to GIF immediately (using direct download link from Google Drive)
+            mainLogo.src = "https://i.postimg.cc/kGFvdRQ4/ezgif-1a98ecab070d0d.gif";
+            mainLogo.classList.add('zoomed');
+            
+            // Start countdown (10 seconds)
+            let seconds = 10;
+            
+            function updateCountdown() {
+                if (seconds > 0) {
+                    countdownText.textContent = `Перенаправлення в Telegram через ${seconds}..`;
+                    countdownText.classList.add('active');
+                    seconds--;
+                    setTimeout(updateCountdown, 1000);
+                } else {
+                    countdownText.classList.remove('active');
+                    // Redirect after countdown
+                    window.location.href = redirectUrl;
+                    // Reset to original image after a short delay
+                    setTimeout(() => {
+                        mainLogo.src = originalLogoSrc;
+                        mainLogo.classList.remove('zoomed');
+                    }, 500);
+                }
+            }
+            
+            updateCountdown();
+        });
+
         function toggleExpand(event, arrow) {
             event.stopPropagation();
             const btnMain = arrow.parentNode;
@@ -337,7 +404,7 @@
         // Handle main button clicks (excluding arrow clicks)
         document.getElementById('telegramBtn').addEventListener('click', function(e) {
             if (!e.target.closest('.btn-arrow')) {
-                window.location.href = "https://t.me/+qOlnWWZ3IjJlYzU4";
+                window.location.href = "https://t.me/+2uA-yoJ8X5o5YTM0";
             }
         });
         
