@@ -12,7 +12,7 @@
             --text: #2d3748;
             --light: #f7fafc;
             --dark: #1a202c;
-            --international-bg: #4a3a6e; /* Темно-фіолетовий для міжнародних переказів */
+            --international-bg: #4a3a6e;
         }
         
         * {
@@ -30,14 +30,90 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Fullscreen notification styles */
+        .fullscreen-notification {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 87, 183, 0.95), rgba(255, 215, 0, 0.95));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.8s ease, transform 1s ease;
+            transform: scale(1.1);
+            pointer-events: none;
+        }
+        
+        .fullscreen-notification.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .fullscreen-notification.hide {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        
+        .notification-flag {
+            font-size: 100px;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .notification-content {
+            text-align: center;
+            color: white;
+            max-width: 80%;
+        }
+        
+        .notification-title {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            line-height: 1.2;
+        }
+        
+        .notification-subtitle {
+            font-size: 24px;
+            font-weight: 500;
+            opacity: 0.9;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
         
         .container {
             width: 100%;
             max-width: 500px;
             margin: 0 auto;
+            transition: filter 0.8s ease;
         }
         
+        .blur-content {
+            filter: blur(5px);
+            pointer-events: none;
+            user-select: none;
+        }
+        
+        /* Rest of your existing styles... */
         header {
             text-align: center;
             margin-bottom: 30px;
@@ -253,42 +329,6 @@
             color: var(--light);
             opacity: 0.6;
         }
-
-        /* Modern notification styles */
-        .notification {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 87, 183, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 1000;
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .notification.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .notification-icon {
-            font-size: 24px;
-            flex-shrink: 0;
-        }
-
-        .notification-content {
-            font-weight: 600;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-        }
         
         @media (max-width: 480px) {
             .logo {
@@ -303,15 +343,20 @@
             .btn-main {
                 padding: 16px 20px;
             }
-
-            .notification {
-                width: calc(100% - 40px);
-                padding: 14px 20px;
-                font-size: 14px;
+            
+            .notification-title {
+                font-size: 32px;
+            }
+            
+            .notification-subtitle {
+                font-size: 20px;
+            }
+            
+            .notification-flag {
+                font-size: 80px;
             }
         }
         
-        /* Zoom animation */
         @keyframes zoomIn {
             from { transform: scale(1); }
             to { transform: scale(1.05); }
@@ -323,7 +368,16 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Fullscreen notification -->
+    <div class="fullscreen-notification" id="fullscreenNotification">
+        <div class="notification-flag">🇺🇦</div>
+        <div class="notification-content">
+            <h1 class="notification-title">Слава Україні!</h1>
+            <p class="notification-subtitle">Бережіть себе 🫂</p>
+        </div>
+    </div>
+
+    <div class="container" id="mainContainer">
         <header>
             <div class="logo-container">
                 <img src="https://drive.google.com/thumbnail?id=10GzpijyLljs9cUh_--u-NeNX6AbTWmzZ&sz=w1000" 
@@ -397,12 +451,6 @@
             Glory to Ukraine! 🇺🇦
         </div>
     </div>
-
-    <!-- Modern notification element -->
-    <div class="notification" id="ukraineNotification">
-        <div class="notification-icon">🇺🇦</div>
-        <div class="notification-content">Слава Україні! Бережіть себе 🫂</div>
-    </div>
     
     <script>
         // Store original logo
@@ -410,16 +458,26 @@
         const redirectUrl = "https://t.me/+2uA-yoJ8X5o5YTM0";
         const countdownText = document.getElementById('countdownText');
         const mainLogo = document.getElementById('mainLogo');
-        const ukraineNotification = document.getElementById('ukraineNotification');
+        const fullscreenNotification = document.getElementById('fullscreenNotification');
+        const mainContainer = document.getElementById('mainContainer');
 
-        // Show Ukraine notification for 3 seconds on page load
+        // Show fullscreen notification on page load
         document.addEventListener('DOMContentLoaded', () => {
+            // Show notification
             setTimeout(() => {
-                ukraineNotification.classList.add('show');
+                fullscreenNotification.classList.add('show');
+                mainContainer.classList.add('blur-content');
                 
                 // Hide after 3 seconds
                 setTimeout(() => {
-                    ukraineNotification.classList.remove('show');
+                    fullscreenNotification.classList.remove('show');
+                    fullscreenNotification.classList.add('hide');
+                    mainContainer.classList.remove('blur-content');
+                    
+                    // Remove element after animation completes
+                    setTimeout(() => {
+                        fullscreenNotification.style.display = 'none';
+                    }, 800);
                 }, 3000);
             }, 500);
 
