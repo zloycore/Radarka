@@ -12,6 +12,7 @@
             --text: #2d3748;
             --light: #f7fafc;
             --dark: #1a202c;
+            --international-bg: #4a3a6e; /* Темно-фіолетовий для міжнародних переказів */
         }
         
         * {
@@ -237,6 +238,14 @@
             border-top: 1px dashed rgba(0, 0, 0, 0.1);
         }
         
+        .international-section {
+            background-color: var(--international-bg);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+        }
+        
         .footer {
             margin-top: 40px;
             text-align: center;
@@ -324,11 +333,18 @@
                 </div>
                 <div class="btn-expand">
                     <div class="btn-expand-content">
-                        💳Додаткові реквізити:<br>
-                        • IBAN UA 70 322001 00000 2620 7358 2760 38<br>
-                        • Номер карти: 4441111125746465<br><br>
-                        
+                        💳Додаткові реквізити⬇️<br>
+                        Перекази по Україні:<br>
+                        • IBAN: UA 70 322001 00000 2620 7358 2760 38<br>
+                        • Номер ₴ карти: 4441111125746465<br>
+                        • Номер $ карти: 4441114484817869<br>
                         🫙 Банка: <a href="https://send.monobank.ua/jar/2kabduxQGE" style="color: var(--primary); text-decoration: none;">monobank</a>
+
+                        <div class="international-section">
+                            🌍Міжнародні перекази:<br>
+                            • IBAN: UA 82 322001 00000 2620 6349 5484 75<br>
+                            • Номер $ карти: 4441114484817869
+                        </div>
                     </div>
                 </div>
             </div>
