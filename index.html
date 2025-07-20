@@ -253,6 +253,42 @@
             color: var(--light);
             opacity: 0.6;
         }
+
+        /* Modern notification styles */
+        .notification {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 87, 183, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .notification-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .notification-content {
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
         
         @media (max-width: 480px) {
             .logo {
@@ -266,6 +302,12 @@
             
             .btn-main {
                 padding: 16px 20px;
+            }
+
+            .notification {
+                width: calc(100% - 40px);
+                padding: 14px 20px;
+                font-size: 14px;
             }
         }
         
@@ -355,6 +397,12 @@
             Glory to Ukraine! 🇺🇦
         </div>
     </div>
+
+    <!-- Modern notification element -->
+    <div class="notification" id="ukraineNotification">
+        <div class="notification-icon">🇺🇦</div>
+        <div class="notification-content">Слава Україні! Бережіть себе 🫂</div>
+    </div>
     
     <script>
         // Store original logo
@@ -362,6 +410,25 @@
         const redirectUrl = "https://t.me/+2uA-yoJ8X5o5YTM0";
         const countdownText = document.getElementById('countdownText');
         const mainLogo = document.getElementById('mainLogo');
+        const ukraineNotification = document.getElementById('ukraineNotification');
+
+        // Show Ukraine notification for 3 seconds on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                ukraineNotification.classList.add('show');
+                
+                // Hide after 3 seconds
+                setTimeout(() => {
+                    ukraineNotification.classList.remove('show');
+                }, 3000);
+            }, 500);
+
+            // Logo animation
+            setTimeout(() => {
+                document.querySelector('.logo').style.opacity = '1';
+                document.querySelector('.logo').style.transform = 'translateY(0)';
+            }, 100);
+        });
 
         // Handle logo click
         mainLogo.addEventListener('click', function() {
@@ -428,14 +495,6 @@
             if (!e.target.closest('.btn-arrow')) {
                 window.location.href = "https://send.monobank.ua/jar/2kabduxQGE";
             }
-        });
-        
-        // Animation on load
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                document.querySelector('.logo').style.opacity = '1';
-                document.querySelector('.logo').style.transform = 'translateY(0)';
-            }, 100);
         });
     </script>
 </body>
