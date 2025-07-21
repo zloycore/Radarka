@@ -12,7 +12,7 @@
             --text: #2d3748;
             --light: #f7fafc;
             --dark: #1a202c;
-            --international-bg: #4a3a6e; /* Темно-фіолетовий для міжнародних переказів */
+            --international-bg: #4a3a6e;
         }
         
         * {
@@ -36,6 +36,11 @@
             width: 100%;
             max-width: 500px;
             margin: 0 auto;
+            transition: filter 0.3s ease;
+        }
+        
+        .container.blurred {
+            filter: blur(5px);
         }
         
         header {
@@ -111,6 +116,12 @@
             opacity: 0.6;
             font-weight: 500;
             margin-bottom: 30px;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        
+        .subtitle:hover {
+            opacity: 0.9;
         }
         
         .btn-main {
@@ -254,6 +265,100 @@
             opacity: 0.6;
         }
         
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal {
+            background-color: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 90%;
+            width: 450px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-size: 18px;
+            line-height: 30px;
+        }
+        
+        .modal-close:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .modal-content {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text);
+        }
+        
+        .modal-content strong {
+            color: var(--primary);
+        }
+
+        /* Welcome message styles */
+        .welcome-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 87, 183, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .welcome-message.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
         @media (max-width: 480px) {
             .logo {
                 max-width: calc(100% - 20px);
@@ -266,6 +371,15 @@
             
             .btn-main {
                 padding: 16px 20px;
+            }
+            
+            .modal {
+                padding: 20px;
+                width: 95%;
+            }
+
+            .welcome-message {
+                font-size: 24px;
             }
         }
         
@@ -281,7 +395,12 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Welcome message -->
+    <div class="welcome-message" id="welcomeMessage">
+        Слава Україні! 🇺🇦
+    </div>
+
+    <div class="container" id="mainContainer">
         <header>
             <div class="logo-container">
                 <img src="https://drive.google.com/thumbnail?id=10GzpijyLljs9cUh_--u-NeNX6AbTWmzZ&sz=w1000" 
@@ -289,7 +408,7 @@
                 <div class="countdown-text" id="countdownText"></div>
             </div>
             <h1>РАДАР УКРАЇНИ <span style="color: var(--secondary)">🇺🇦</span></h1>
-            <p class="subtitle">Ми не є офіційним джерелом інформації</p>
+            <p class="subtitle" id="disclaimerText">Ми не є офіційним джерелом інформації</p>
         </header>
         
         <div class="btn-group">
@@ -356,12 +475,43 @@
         </div>
     </div>
     
+    <!-- Modal -->
+    <div class="modal-overlay" id="disclaimerModal">
+        <div class="modal">
+            <div class="modal-close" id="modalClose">×</div>
+            <div class="modal-content">
+                Наш канал «Радар України 🇺🇦» <strong>не є офіційним джерелом інформації</strong> і не пов'язаний з державними структурами чи силовими відомствами. Ми публікуємо дані на основі відкритих джерел, свідчень користувачів та власного моніторингу, тому <strong>можливі неточності чи затримки в оповіщеннях</strong>.  
+                <br><br>
+                <strong>Завжди слухайте офіційні джерела</strong> (ППО, ДСНС, Нацполіція) та дійте згідно з їх рекомендаціями. Ваша безпека — найважливіше!
+            </div>
+        </div>
+    </div>
+    
     <script>
         // Store original logo
         const originalLogoSrc = document.getElementById('mainLogo').src;
         const redirectUrl = "https://t.me/+2uA-yoJ8X5o5YTM0";
         const countdownText = document.getElementById('countdownText');
         const mainLogo = document.getElementById('mainLogo');
+        const disclaimerText = document.getElementById('disclaimerText');
+        const disclaimerModal = document.getElementById('disclaimerModal');
+        const modalClose = document.getElementById('modalClose');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const mainContainer = document.getElementById('mainContainer');
+        
+        // Show welcome message on load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Show welcome message
+            setTimeout(() => {
+                welcomeMessage.classList.add('hidden');
+            }, 1000); // Hide after 1 second
+            
+            // Logo animation
+            setTimeout(() => {
+                document.querySelector('.logo').style.opacity = '1';
+                document.querySelector('.logo').style.transform = 'translateY(0)';
+            }, 100);
+        });
 
         // Handle logo click
         mainLogo.addEventListener('click', function() {
@@ -391,6 +541,26 @@
             }
             
             updateCountdown();
+        });
+
+        // Handle disclaimer text click
+        disclaimerText.addEventListener('click', function() {
+            mainContainer.classList.add('blurred');
+            disclaimerModal.classList.add('active');
+        });
+        
+        // Handle modal close
+        modalClose.addEventListener('click', function() {
+            mainContainer.classList.remove('blurred');
+            disclaimerModal.classList.remove('active');
+        });
+        
+        // Close modal when clicking outside
+        disclaimerModal.addEventListener('click', function(e) {
+            if (e.target === disclaimerModal) {
+                mainContainer.classList.remove('blurred');
+                disclaimerModal.classList.remove('active');
+            }
         });
 
         function toggleExpand(event, arrow) {
@@ -428,14 +598,6 @@
             if (!e.target.closest('.btn-arrow')) {
                 window.location.href = "https://send.monobank.ua/jar/2kabduxQGE";
             }
-        });
-        
-        // Animation on load
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                document.querySelector('.logo').style.opacity = '1';
-                document.querySelector('.logo').style.transform = 'translateY(0)';
-            }, 100);
         });
     </script>
 </body>
