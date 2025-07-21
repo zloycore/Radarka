@@ -12,7 +12,7 @@
             --text: #2d3748;
             --light: #f7fafc;
             --dark: #1a202c;
-            --international-bg: #4a3a6e;
+            --international-bg: #4a3a6e; /* Темно-фіолетовий для міжнародних переказів */
         }
         
         * {
@@ -30,90 +30,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        /* Fullscreen notification styles */
-        .fullscreen-notification {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(0, 87, 183, 0.95), rgba(255, 215, 0, 0.95));
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            opacity: 0;
-            transition: opacity 0.8s ease, transform 1s ease;
-            transform: scale(1.1);
-            pointer-events: none;
-        }
-        
-        .fullscreen-notification.show {
-            opacity: 1;
-            transform: scale(1);
-        }
-        
-        .fullscreen-notification.hide {
-            opacity: 0;
-            transform: scale(0.9);
-        }
-        
-        .notification-flag {
-            font-size: 100px;
-            margin-bottom: 30px;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        .notification-content {
-            text-align: center;
-            color: white;
-            max-width: 80%;
-        }
-        
-        .notification-title {
-            font-size: 42px;
-            font-weight: 800;
-            margin-bottom: 20px;
-            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-            line-height: 1.2;
-        }
-        
-        .notification-subtitle {
-            font-size: 24px;
-            font-weight: 500;
-            opacity: 0.9;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
         }
         
         .container {
             width: 100%;
             max-width: 500px;
             margin: 0 auto;
-            transition: filter 0.8s ease;
         }
         
-        .blur-content {
-            filter: blur(5px);
-            pointer-events: none;
-            user-select: none;
-        }
-        
-        /* Rest of your existing styles... */
         header {
             text-align: center;
             margin-bottom: 30px;
@@ -343,20 +267,9 @@
             .btn-main {
                 padding: 16px 20px;
             }
-            
-            .notification-title {
-                font-size: 32px;
-            }
-            
-            .notification-subtitle {
-                font-size: 20px;
-            }
-            
-            .notification-flag {
-                font-size: 80px;
-            }
         }
         
+        /* Zoom animation */
         @keyframes zoomIn {
             from { transform: scale(1); }
             to { transform: scale(1.05); }
@@ -368,16 +281,7 @@
     </style>
 </head>
 <body>
-    <!-- Fullscreen notification -->
-    <div class="fullscreen-notification" id="fullscreenNotification">
-        <div class="notification-flag">🇺🇦</div>
-        <div class="notification-content">
-            <h1 class="notification-title">Слава Україні!</h1>
-            <p class="notification-subtitle">Бережіть себе 🫂</p>
-        </div>
-    </div>
-
-    <div class="container" id="mainContainer">
+    <div class="container">
         <header>
             <div class="logo-container">
                 <img src="https://drive.google.com/thumbnail?id=10GzpijyLljs9cUh_--u-NeNX6AbTWmzZ&sz=w1000" 
@@ -458,35 +362,6 @@
         const redirectUrl = "https://t.me/+2uA-yoJ8X5o5YTM0";
         const countdownText = document.getElementById('countdownText');
         const mainLogo = document.getElementById('mainLogo');
-        const fullscreenNotification = document.getElementById('fullscreenNotification');
-        const mainContainer = document.getElementById('mainContainer');
-
-        // Show fullscreen notification on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            // Show notification
-            setTimeout(() => {
-                fullscreenNotification.classList.add('show');
-                mainContainer.classList.add('blur-content');
-                
-                // Hide after 3 seconds
-                setTimeout(() => {
-                    fullscreenNotification.classList.remove('show');
-                    fullscreenNotification.classList.add('hide');
-                    mainContainer.classList.remove('blur-content');
-                    
-                    // Remove element after animation completes
-                    setTimeout(() => {
-                        fullscreenNotification.style.display = 'none';
-                    }, 800);
-                }, 3000);
-            }, 500);
-
-            // Logo animation
-            setTimeout(() => {
-                document.querySelector('.logo').style.opacity = '1';
-                document.querySelector('.logo').style.transform = 'translateY(0)';
-            }, 100);
-        });
 
         // Handle logo click
         mainLogo.addEventListener('click', function() {
@@ -553,6 +428,14 @@
             if (!e.target.closest('.btn-arrow')) {
                 window.location.href = "https://send.monobank.ua/jar/2kabduxQGE";
             }
+        });
+        
+        // Animation on load
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.querySelector('.logo').style.opacity = '1';
+                document.querySelector('.logo').style.transform = 'translateY(0)';
+            }, 100);
         });
     </script>
 </body>
