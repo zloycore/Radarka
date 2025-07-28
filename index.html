@@ -266,6 +266,40 @@
             opacity: 0.6;
         }
         
+        /* Video button on main page */
+        .main-video-btn-container {
+            width: 100%;
+            text-align: center;
+            margin: 25px 0;
+        }
+        
+        .main-video-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 15px rgba(0, 87, 183, 0.25);
+        }
+        
+        .main-video-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 87, 183, 0.35);
+        }
+        
+        .main-video-btn i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
         /* Modal styles */
         .modal-overlay {
             position: fixed;
@@ -443,63 +477,6 @@
             background: rgba(255, 255, 255, 0.3);
             border-color: rgba(255, 255, 255, 0.4);
         }
-        
-        /* Modern video button styles */
-        .video-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #0057b7 0%, #1a73e8 100%);
-            color: white;
-            border: none;
-            border-radius: 24px;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            margin-top: 15px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            box-shadow: 0 2px 10px rgba(0, 87, 183, 0.2);
-            position: relative;
-            overflow: hidden;
-            height: 40px;
-        }
-
-        .video-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 87, 183, 0.3);
-            background: linear-gradient(135deg, #1a73e8 0%, #0057b7 100%);
-        }
-
-        .video-btn:active {
-            transform: translateY(0);
-        }
-
-        .video-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .video-btn:hover::before {
-            left: 100%;
-        }
-
-        .video-btn i {
-            margin-right: 8px;
-            font-size: 16px;
-            transition: transform 0.3s ease;
-        }
-
-        .video-btn:hover i {
-            transform: scale(1.1);
-        }
 
         /* Custom video player styles */
         .video-modal {
@@ -551,10 +528,9 @@
                 font-size: 24px;
             }
             
-            .video-btn {
-                padding: 8px 16px;
-                font-size: 13px;
-                height: 36px;
+            .main-video-btn {
+                padding: 12px 24px;
+                font-size: 15px;
             }
             
             .video-modal {
@@ -620,12 +596,6 @@
                             <span class="copy-btn-text">Скопіювати</span>
                         </span><br>
                         В іншому браузері. Або як варіант, скиньте це посилання в "Збережене" Telegram, та спокійно стовідсотково потрапите в канал з усією інформацію🫂
-                        <div style="text-align: center; margin-top: 15px;">
-                            <div class="video-btn" id="videoInstructionBtn">
-                                <i class="fas fa-play-circle"></i>
-                                <span>ВІДЕО-ІНСТРУКЦІЯ</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -682,6 +652,14 @@
                 </div>
             </div>
         </div>
+
+        <!-- Кнопка відео-інструкції на головній сторінці -->
+        <div class="main-video-btn-container">
+            <button class="main-video-btn" id="mainVideoBtn">
+                <i class="fas fa-play-circle"></i>
+                ВІДЕО-ІНСТРУКЦІЯ
+            </button>
+        </div>
         
         <div class="footer">
             © 2024 PatrulUA. Всі права захищені.<br>
@@ -701,7 +679,7 @@
         </div>
     </div>
     
-    <!-- Video Modal (ОНОВЛЕНО) -->
+    <!-- Video Modal -->
     <div class="modal-overlay" id="videoModal">
         <div class="video-modal">
             <div class="modal-close" id="videoModalClose">×</div>
@@ -733,7 +711,7 @@
         // Video elements
         const videoModal = document.getElementById('videoModal');
         const videoModalClose = document.getElementById('videoModalClose');
-        const videoInstructionBtn = document.getElementById('videoInstructionBtn');
+        const mainVideoBtn = document.getElementById('mainVideoBtn');
         const streamableIframe = document.getElementById('streamableIframe');
 
         // Функція для зупинки відео
@@ -810,20 +788,20 @@
             }
         });
 
-        // Video instruction button click
-        videoInstructionBtn.addEventListener('click', function() {
+        // Main video button click
+        mainVideoBtn.addEventListener('click', function() {
             mainContainer.classList.add('blurred');
             videoModal.classList.add('active');
         });
         
-        // Video modal close (оновлено)
+        // Video modal close
         videoModalClose.addEventListener('click', function() {
             pauseVideo();
             mainContainer.classList.remove('blurred');
             videoModal.classList.remove('active');
         });
         
-        // Close video modal when clicking outside (оновлено)
+        // Close video modal when clicking outside
         videoModal.addEventListener('click', function(e) {
             if (e.target === videoModal) {
                 pauseVideo();
