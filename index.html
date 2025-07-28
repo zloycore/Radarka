@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PatrulUA | Офіційний ресурс</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
             --primary: #0057b7;
@@ -359,7 +360,7 @@
             pointer-events: none;
         }
         
-        /* Оновлені стилі для сповіщення */
+        /* Copy notification styles */
         .copy-notification {
             position: fixed;
             bottom: 30px;
@@ -390,7 +391,7 @@
             font-size: 16px;
         }
         
-        /* Оновлені стилі для кнопки копіювання */
+        /* Copy button styles */
         .copy-btn {
             display: inline-flex;
             align-items: center;
@@ -425,7 +426,7 @@
             font-weight: 500;
         }
         
-        /* Стилі для кнопок копіювання в міжнародних переказах */
+        /* International section copy buttons */
         .international-section .copy-btn {
             background: rgba(255, 255, 255, 0.2);
             border-color: rgba(255, 255, 255, 0.3);
@@ -441,6 +442,90 @@
         .international-section .copy-btn:hover {
             background: rgba(255, 255, 255, 0.3);
             border-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        /* Modern video button styles */
+        .video-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0057b7 0%, #1a73e8 100%);
+            color: white;
+            border: none;
+            border-radius: 24px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 2px 10px rgba(0, 87, 183, 0.2);
+            position: relative;
+            overflow: hidden;
+            height: 40px;
+        }
+
+        .video-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 87, 183, 0.3);
+            background: linear-gradient(135deg, #1a73e8 0%, #0057b7 100%);
+        }
+
+        .video-btn:active {
+            transform: translateY(0);
+        }
+
+        .video-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .video-btn:hover::before {
+            left: 100%;
+        }
+
+        .video-btn i {
+            margin-right: 8px;
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .video-btn:hover i {
+            transform: scale(1.1);
+        }
+
+        /* Custom video player styles */
+        .video-modal {
+            width: 90%;
+            max-width: 800px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background: #000;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
         }
         
         @media (max-width: 480px) {
@@ -464,6 +549,16 @@
 
             .welcome-message {
                 font-size: 24px;
+            }
+            
+            .video-btn {
+                padding: 8px 16px;
+                font-size: 13px;
+                height: 36px;
+            }
+            
+            .video-modal {
+                width: 95%;
             }
         }
         
@@ -525,6 +620,12 @@
                             <span class="copy-btn-text">Скопіювати</span>
                         </span><br>
                         В іншому браузері. Або як варіант, скиньте це посилання в "Збережене" Telegram, та спокійно стовідсотково потрапите в канал з усією інформацію🫂
+                        <div style="text-align: center; margin-top: 15px;">
+                            <div class="video-btn" id="videoInstructionBtn">
+                                <i class="fas fa-play-circle"></i>
+                                <span>ВІДЕО-ІНСТРУКЦІЯ</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -588,7 +689,7 @@
         </div>
     </div>
     
-    <!-- Modal -->
+    <!-- Disclaimer Modal -->
     <div class="modal-overlay" id="disclaimerModal">
         <div class="modal">
             <div class="modal-close" id="modalClose">×</div>
@@ -596,6 +697,22 @@
                 Наш канал «Радар України 🇺🇦» <strong>не є офіційним джерелом інформації</strong> і не пов'язаний з державними структурами чи силовими відомствами. Ми публікуємо дані на основі відкритих джерел, свідчень користувачів та власного моніторингу, тому <strong>можливі неточності чи затримки в оповіщеннях</strong>.  
                 <br><br>
                 <strong>Завжди слухайте офіційні джерела</strong> (ППО, ДСНС, Нацполіція) та дійте згідно з їх рекомендаціями. Ваша безпека — найважливіше!
+            </div>
+        </div>
+    </div>
+    
+    <!-- Video Modal (ОНОВЛЕНО) -->
+    <div class="modal-overlay" id="videoModal">
+        <div class="video-modal">
+            <div class="modal-close" id="videoModalClose">×</div>
+            <div class="video-container">
+                <iframe 
+                    id="streamableIframe"
+                    src="https://streamable.com/e/hdt8zh?autoplay=1" 
+                    frameborder="0" 
+                    allowfullscreen
+                    allow="autoplay">
+                </iframe>
             </div>
         </div>
     </div>
@@ -613,12 +730,28 @@
         const mainContainer = document.getElementById('mainContainer');
         const copyNotification = document.getElementById('copyNotification');
         
+        // Video elements
+        const videoModal = document.getElementById('videoModal');
+        const videoModalClose = document.getElementById('videoModalClose');
+        const videoInstructionBtn = document.getElementById('videoInstructionBtn');
+        const streamableIframe = document.getElementById('streamableIframe');
+
+        // Функція для зупинки відео
+        function pauseVideo() {
+            // Перезавантажуємо iframe для зупинки відео
+            const iframeSrc = streamableIframe.src;
+            streamableIframe.src = '';
+            setTimeout(() => {
+                streamableIframe.src = iframeSrc;
+            }, 100);
+        }
+
         // Show welcome message on load
         document.addEventListener('DOMContentLoaded', () => {
             // Show welcome message
             setTimeout(() => {
                 welcomeMessage.classList.add('hidden');
-            }, 1000); // Hide after 1 second
+            }, 1000);
             
             // Logo animation
             setTimeout(() => {
@@ -629,7 +762,7 @@
 
         // Handle logo click
         mainLogo.addEventListener('click', function() {
-            // Change to GIF immediately (using direct download link from Google Drive)
+            // Change to GIF immediately
             mainLogo.src = "https://i.postimg.cc/kGFvdRQ4/ezgif-1a98ecab070d0d.gif";
             mainLogo.classList.add('zoomed');
             
@@ -674,6 +807,28 @@
             if (e.target === disclaimerModal) {
                 mainContainer.classList.remove('blurred');
                 disclaimerModal.classList.remove('active');
+            }
+        });
+
+        // Video instruction button click
+        videoInstructionBtn.addEventListener('click', function() {
+            mainContainer.classList.add('blurred');
+            videoModal.classList.add('active');
+        });
+        
+        // Video modal close (оновлено)
+        videoModalClose.addEventListener('click', function() {
+            pauseVideo();
+            mainContainer.classList.remove('blurred');
+            videoModal.classList.remove('active');
+        });
+        
+        // Close video modal when clicking outside (оновлено)
+        videoModal.addEventListener('click', function(e) {
+            if (e.target === videoModal) {
+                pauseVideo();
+                mainContainer.classList.remove('blurred');
+                videoModal.classList.remove('active');
             }
         });
 
